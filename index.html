@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Markdown Generator</title>
+  <style>
+    /* Add your CSS styling here */
+    ::-webkit-scrollbar {
+      display: none;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .input-group {
+      margin-bottom: 10px;
+    }
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .input-group input, .input-group select, .input-group textarea {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    textarea {
+      height: 150px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+
+  <!-- tinyMCE <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script> -->
+
+</head>
+<body>
+  <h1>Markdown Generator</h1>
+  
+  <div class="input-group">
+    <label for="dateInput">Date</label>
+    <input type="date" id="dateInput">
+  </div>
+
+  <div class="input-group">
+    <label for="categoryInput">Category</label>
+    <select id="categoryInput">
+      <option>Experimental log</option>
+      <option>Discussion</option>
+      <option>Reading</option>
+      <option>Inspiration</option>
+    </select>
+  </div>
+
+  <div class="input-group">
+    <label for="authorInput">Author</label>
+    <input type="text" id="authorInput" value="Jie Hua">
+  </div>
+
+  <div class="input-group">
+    <label for="emailInput">Email</label>
+    <input type="text" id="emailInput" value="Jie.Hua@lmu.de">
+  </div>
+
+  <div class="input-group">
+    <label for="markdownContent">Markdown Content</label>
+    <textarea id="markdownContent"></textarea>
+
+<!-- tinymce -->
+    <!-- <textarea id="editor"></textarea>
+    <script>
+      tinymce.init({
+        selector: '#editor',
+        // Add more TinyMCE options as needed
+        plugins: 'your-markdown-plugin', // Replace with actual Markdown plugin
+        // Configure other options for the Markdown plugin
+      });
+    </script> -->
+
+
+  </div>
+  
+
+
+
+  <button id="saveButton">Save as Markdown</button>
+
+
+
+  <script>
+    // Set the default date
+    document.addEventListener('DOMContentLoaded', (event) => {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('dateInput').value = today;
+    });
+  </script>
+  
+
+  <script>
+    const { ipcRenderer } = require('electron');
+  
+    document.getElementById('saveButton').addEventListener('click', () => {
+      const date = document.getElementById('dateInput').value;
+      const category = document.getElementById('categoryInput').value;
+      const author = document.getElementById('authorInput').value;
+      const email = document.getElementById('emailInput').value;
+      const markdownContent = document.getElementById('markdownContent').value;
+  
+      const yamlContent = `---\nDate: ${date}\nCategory: ${category}\nAuthor: ${author}\nEmail: ${email}\n---\n\n`;
+      const completeContent = yamlContent + markdownContent;
+      const defaultFileName = `${category.replace(/\s+/g, '_')}_${date}.md`;
+  
+      ipcRenderer.send('save-markdown', completeContent, defaultFileName);
+    });
+  </script>
+  <script>
+    const fs = require('fs');
+    const path = require('path');
+  
+    function loadDefaultContents() {
+      const filePath = path.join(__dirname, 'defaultContents.json'); // 确保路径正确
+      try {
+        const data = fs.readFileSync(filePath);
+        return JSON.parse(data);
+      } catch (error) {
+        console.error('Error reading the default contents file:', error);
+        return {};
+      }
+    }
+  
+    const defaultMarkdownContents = loadDefaultContents();
+  
+    function updateMarkdownContent() {
+      const selectedCategory = document.getElementById('categoryInput').value;
+      const markdownContent = defaultMarkdownContents[selectedCategory] || '';
+      document.getElementById('markdownContent').value = markdownContent;
+    }
+  
+    document.getElementById('categoryInput').addEventListener('change', updateMarkdownContent);
+    document.addEventListener('DOMContentLoaded', updateMarkdownContent);
+  </script>
+  
+  
+  
+
+  
+</body>
+</html>
