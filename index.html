@@ -74,19 +74,6 @@
   <div class="input-group">
     <label for="markdownContent">Markdown Content</label>
     <textarea id="markdownContent"></textarea>
-
-<!-- tinymce -->
-    <!-- <textarea id="editor"></textarea>
-    <script>
-      tinymce.init({
-        selector: '#editor',
-        // Add more TinyMCE options as needed
-        plugins: 'your-markdown-plugin', // Replace with actual Markdown plugin
-        // Configure other options for the Markdown plugin
-      });
-    </script> -->
-
-
   </div>
   
 
@@ -115,7 +102,7 @@
       const email = document.getElementById('emailInput').value;
       const markdownContent = document.getElementById('markdownContent').value;
   
-      const yamlContent = `---\nDate: ${date}\nCategory: ${category}\nAuthor: ${author}\nEmail: ${email}\n---\n\n`;
+      const yamlContent = `---\ndate: ${date}\ncategory: ${category}\nauthor: ${author}\nemail: ${email}\n---\n\n`;
       const completeContent = yamlContent + markdownContent;
       const defaultFileName = `${category.replace(/\s+/g, '_')}_${date}.md`;
   

@@ -7,6 +7,7 @@
     "files": [
       "main.js",
       "index.html",
+      "defaultContents.json",
       "dist/**/*",
       "node_modules/**/*",
       "package.json"
