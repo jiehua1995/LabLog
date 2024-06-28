@@ -1,7 +1,7 @@
 {
-    "Experimental log": "[toc]\n\n## To-do list\n\n- [ ] \n\n## Experiments\n\n## Other things",
-    "Discussion": "[toc]\n\n## Content\n\n",
-    "Reading": "[toc]\n\n## Basic Information\n\n**Title:**\n\n**DOI:**\n\n**URL:**\n\n**Published:**\n\n**Journal:**\n\n## Notes",
-    "Inspiration": "[toc]\n\n## Content\n\n"
+    "Experimental log": "[toc]\n\n## To-do list\n\n- [ ] \n\n## Experiments\n\n## Other things\n\n<button style="border-radius: 15px; transition: background-color 0.3s; cursor: pointer">[:file_folder:  File Path](./)</button>",
+    "Discussion": "[toc]\n\n## Content\n\n<button style="border-radius: 15px; transition: background-color 0.3s; cursor: pointer">[:file_folder:  File Path](./)</button>",
+    "Reading": "[toc]\n\n## Basic Information\n\n**Title:**\n\n**DOI:**\n\n**URL:**\n\n**Published:**\n\n**Journal:**\n\n## Notes\n\n<button style="border-radius: 15px; transition: background-color 0.3s; cursor: pointer">[:file_folder:  File Path](./)</button>",
+    "Inspiration": "[toc]\n\n## Content\n\n<button style="border-radius: 15px; transition: background-color 0.3s; cursor: pointer">[:file_folder:  File Path](./)</button>"
 }
   
