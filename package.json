@@ -12,8 +12,8 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^28.1.4",
-    "electron-builder": "^24.9.1"
+    "electron": "^32.0.1",
+    "electron-builder": "^24.13.3"
   },
   "repository": {
     "type": "git",
