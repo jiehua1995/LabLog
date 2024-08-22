@@ -1,27 +1,19 @@
-const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
-const fs = require('fs');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 
 function createWindow() {
-  // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 600,
-    height: 760,
-    icon: "favicon.ico", // Update the path
+    height: 800,
+    icon: path.join(__dirname, 'build/icon.ico'), // 设置窗口图标
+    autoHideMenuBar: true, // 隐藏菜单栏
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-      // enableRemoteModule: true  // 启用 remote 模块
-    },
-    autoHideMenuBar: true, //自动隐藏菜单栏
-    // frame: false
+      nodeIntegration: true, // 启用Node.js集成
+      contextIsolation: false, // 禁用上下文隔离
+    }
   });
 
-  // and load the index.html of the app.
   mainWindow.loadFile('index.html');
-
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
 }
 
 app.whenReady().then(createWindow);
@@ -38,24 +30,7 @@ app.on('activate', () => {
   }
 });
 
-ipcMain.on('save-markdown', (event, content, filePath) => {
-  dialog.showSaveDialog({
-    filters: [{ name: 'Markdown', extensions: ['md'] }],
-    defaultPath: filePath
-  }).then(file => {
-    if (!file.canceled && file.filePath) {
-      fs.writeFileSync(file.filePath.toString(), content, 'utf-8');
-      shell.openPath(file.filePath.toString()).catch(err => {
-        console.error('Failed to open the file:', err);
-      });
-      // 获取文件所在的目录路径
-      const folderPath = path.dirname(file.filePath.toString());
-      // 打开该目录
-      shell.openPath(folderPath).catch(err => {
-        console.error('Failed to open the folder:', err);
-      });
-    }
-  }).catch(err => {
-    console.error(err);
-  });
+// IPC 主进程处理，用于将安装路径发送到渲染进程
+ipcMain.handle('get-install-path', (event) => {
+  return app.getAppPath();
 });

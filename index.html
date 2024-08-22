@@ -2,53 +2,9 @@
 <html>
 <head>
   <title>Markdown Generator</title>
-  <style>
-    /* Add your CSS styling here */
-    ::-webkit-scrollbar {
-      display: none;
-    }
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-    footer {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      height: 60px;
-      text-align: center;
-      font-size: small;
-      line-height: 60px;
-    }
-    .input-group {
-      margin-bottom: 10px;
-    }
-    .input-group label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-    .input-group input, .input-group select, .input-group textarea {
-      width: 100%;
-      padding: 8px;
-      box-sizing: border-box;
-    }
-    textarea {
-      height: 150px;
-    }
-    button {
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-  </style>
-
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="js/loadSettings.js"></script>
+  
 </head>
 <body>
   <h1>Markdown Generator</h1>
@@ -70,84 +26,29 @@
 
   <div class="input-group">
     <label for="authorInput">Author</label>
-    <input type="text" id="authorInput" value="Jie Hua">
+    <input type="text" id="authorInput" value="">
   </div>
 
   <div class="input-group">
     <label for="emailInput">Email</label>
-    <input type="text" id="emailInput" value="Jie.Hua@lmu.de">
+    <input type="text" id="emailInput" value="">
   </div>
 
   <div class="input-group">
     <label for="markdownContent">Markdown Content</label>
-    <textarea id="markdownContent"></textarea>
+    <textarea id="markdownContent" name="markdownContent" style="height: 300px;"></textarea>
   </div>
   
-
-
+  
+  
 
   <button id="saveButton">Save as Markdown</button>
 
-
-
-  <script>
-    // Set the default date
-    document.addEventListener('DOMContentLoaded', (event) => {
-      const today = new Date().toISOString().split('T')[0];
-      document.getElementById('dateInput').value = today;
-    });
-  </script>
-  
-
-  <script>
-    const { ipcRenderer } = require('electron');
-  
-    document.getElementById('saveButton').addEventListener('click', () => {
-      const date = document.getElementById('dateInput').value;
-      const category = document.getElementById('categoryInput').value;
-      const author = document.getElementById('authorInput').value;
-      const email = document.getElementById('emailInput').value;
-      const markdownContent = document.getElementById('markdownContent').value;
-  
-      const yamlContent = `---\ndate: ${date}\ncategory: ${category}\nauthor: ${author}\nemail: ${email}\n---\n\n`;
-      const completeContent = yamlContent + markdownContent;
-      const defaultFileName = `${category.replace(/\s+/g, '_')}_${date}.md`;
-  
-      ipcRenderer.send('save-markdown', completeContent, defaultFileName);
-    });
-  </script>
-  <script>
-    const fs = require('fs');
-    const path = require('path');
-  
-    function loadDefaultContents() {
-      const filePath = path.join(__dirname, 'defaultContents.json'); // 确保路径正确
-      try {
-        const data = fs.readFileSync(filePath);
-        return JSON.parse(data);
-      } catch (error) {
-        console.error('Error reading the default contents file:', error);
-        return {};
-      }
-    }
-  
-    const defaultMarkdownContents = loadDefaultContents();
-  
-    function updateMarkdownContent() {
-      const selectedCategory = document.getElementById('categoryInput').value;
-      const markdownContent = defaultMarkdownContents[selectedCategory] || '';
-      document.getElementById('markdownContent').value = markdownContent;
-    }
-  
-    document.getElementById('categoryInput').addEventListener('change', updateMarkdownContent);
-    document.addEventListener('DOMContentLoaded', updateMarkdownContent);
-  </script>
-  
-  
   <footer>
-    © 2024 Lab Log | Powered by <a href="mailto:Jie.Hua@lmu.de">Jie Hua</a>
+    <p id="jsonFilePath" style="font-size: small;"></p>
+    <p>© 2024 Lab Log | Powered by <a href="mailto:Jie.Hua@lmu.de">Jie Hua</a></p>
   </footer>
 
-  
+  <script src="js/themeToggle.js"></script>
 </body>
 </html>

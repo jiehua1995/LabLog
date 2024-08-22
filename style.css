@@ -1,0 +1,137 @@
+/* Light mode (Cupcake theme inspired) */
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  margin: 0;
+  background-color: #F2F7FA; /* 柔和的浅色背景 */
+  color: #3D4451; /* 深色文本 */
+  transition: background-color 0.3s, color 0.3s;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Dark mode (Dracula theme inspired) */
+body.dark-mode {
+  background-color: #282A36; /* Dracula风格的深色背景 */
+  color: #F8F8F2; /* 明亮的文本颜色 */
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.input-group input, 
+.input-group select, 
+.input-group textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+textarea {
+  height: 150px;
+  resize: vertical;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+footer {
+  margin-top: auto;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+  font-size: small;
+  line-height: 1.2;
+}
+
+#jsonFilePath {
+  margin-bottom: 5px;
+  font-size: small;
+  line-height: 1.2;
+}
+
+body.dark-mode #jsonFilePath {
+  color: #8BE9FD; /* 更加明亮的蓝绿色，用于强调路径文本 */
+}
+
+/* Theme Toggle Button */
+#themeToggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode #themeToggle {
+  background-color: #44475A; /* Dracula风格的按钮背景色 */
+}
+
+#themeToggle:hover {
+  background-color: #e0e0e0;
+}
+
+body.dark-mode #themeToggle:hover {
+  background-color: #6272A4; /* 鼠标悬停时的背景色 */
+}
+
+#themeToggle svg {
+  width: 24px;
+  height: 24px;
+}
+
+#themeToggle.sun svg path {
+  fill: #FFA500; /* 太阳图标橙色 */
+}
+
+#themeToggle.moon svg path {
+  fill: #3D4451; /* 月亮图标深色 */
+}
+
+body.dark-mode #themeToggle.moon svg path {
+  fill: #F8F8F2; /* 暗模式下月亮图标浅色 */
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
