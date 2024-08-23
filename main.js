@@ -4,7 +4,7 @@ const path = require('path');
 function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 600,
-    height: 800,
+    height: 600,
     icon: path.join(__dirname, 'build/icon.ico'), // 设置窗口图标
     autoHideMenuBar: true, // 隐藏菜单栏
     webPreferences: {

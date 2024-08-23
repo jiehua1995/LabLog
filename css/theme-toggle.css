@@ -1,0 +1,31 @@
+/* theme-toggle.css */
+button[data-toggle-theme] {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FF80AB; /* 粉色背景 */
+  border: none;
+  border-radius: 50%; /* 圆形按钮 */
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
+  font-size: 24px;
+  transition: background-color 0.3s;
+}
+
+button[data-toggle-theme]:hover {
+  background-color: #FF4081; /* 悬停时深粉色 */
+}
+
+body.dark-mode button[data-toggle-theme] {
+  background-color: #757575; /* 深灰色背景 */
+  color: #E0E0E0; /* 浅灰色图标 */
+}
+
+body.dark-mode button[data-toggle-theme]:hover {
+  background-color: #9E9E9E; /* 悬停时的浅灰色背景 */
+}

@@ -1,56 +1,45 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const themeToggle = document.createElement('div');
-    themeToggle.id = 'themeToggle';
-    themeToggle.classList.add('moon'); // 默认显示月亮图标
-    themeToggle.innerHTML = `
-      <svg viewBox="0 0 24 24">
-        <path d="M21.752 15.002a9.004 9.004 0 01-10.49-10.49 9.004 9.004 0 1010.49 10.49z" fill="#F8F8F2"></path>
-      </svg>
-    `;
-  
-    themeToggle.addEventListener('click', () => {
-      if (document.body.classList.contains('dark-mode')) {
-        document.body.classList.remove('dark-mode');
-        themeToggle.innerHTML = `
-          <svg viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="5" fill="#FFA500"></circle>
-            <line x1="12" y1="1" x2="12" y2="4" stroke="#FFA500" stroke-width="2"></line>
-            <line x1="12" y1="20" x2="12" y2="23" stroke="#FFA500" stroke-width="2"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="#FFA500" stroke-width="2"></line>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="#FFA500" stroke-width="2"></line>
-            <line x1="1" y1="12" x2="4" y2="12" stroke="#FFA500" stroke-width="2"></line>
-            <line x1="20" y1="12" x2="23" y2="12" stroke="#FFA500" stroke-width="2"></line>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="#FFA500" stroke-width="2"></line>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="#FFA500" stroke-width="2"></line>
-          </svg>
-        `;
-        themeToggle.classList.remove('sun');
-        themeToggle.classList.add('moon');
-      } else {
-        document.body.classList.add('dark-mode');
-        themeToggle.innerHTML = `
-          <svg viewBox="0 0 24 24">
-            <path d="M21.752 15.002a9.004 9.004 0 01-10.49-10.49 9.004 9.004 0 1010.49 10.49z" fill="#F8F8F2"></path>
-          </svg>
-        `;
-        themeToggle.classList.remove('moon');
-        themeToggle.classList.add('sun');
+  const themeToggleButton = document.querySelector('[data-toggle-theme]');
+
+  // 定义全局的初始化主题函数
+  window.initTheme = (theme, themeColor) => {
+      applyTheme(theme || 'auto', themeColor || '#FF80AB');
+  };
+
+  // 主题应用和切换函数
+  function applyTheme(theme, themeColor) {
+      document.body.classList.remove('light', 'dark-mode');
+      if (theme === 'auto') {
+          const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          theme = prefersDarkScheme ? 'dark-mode' : 'light';
       }
-    });
-  
-    document.body.appendChild(themeToggle);
-  });
-  
-  function applyTheme(theme) {
-    const themeToggle = document.getElementById('themeToggle');
-    if (theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.body.classList.add('dark-mode');
-      themeToggle.classList.remove('moon');
-      themeToggle.classList.add('sun');
-    } else {
-      document.body.classList.remove('dark-mode');
-      themeToggle.classList.remove('sun');
-      themeToggle.classList.add('moon');
-    }
+      document.body.classList.add(theme);
+      localStorage.setItem('theme', theme);
+
+      // 设置图标和主题色
+      if (theme === 'dark-mode') {
+          themeToggleButton.innerHTML = '🌙'; // 月亮图标
+          themeToggleButton.style.color = '#FFFFFF'; // 月亮图标白色
+      } else {
+          themeToggleButton.innerHTML = '☀️'; // 太阳图标
+          themeToggleButton.style.color = '#FFA500'; // 太阳图标黄色
+      }
+
+      // 应用自定义主题色到所有按钮
+      document.querySelectorAll('button').forEach(button => {
+          button.style.backgroundColor = themeColor;
+      });
   }
-  
+
+  // 从本地存储中读取当前主题
+  const currentTheme = localStorage.getItem('theme') || 'light';
+  const currentColor = '#FF80AB'; // 默认颜色（如果未设置）
+  applyTheme(currentTheme, currentColor);
+
+  // 点击按钮时切换主题
+  themeToggleButton.addEventListener('click', () => {
+      const newTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark-mode';
+      const themeColor = window.settings ? window.settings.themeColor : '#FF80AB';
+      applyTheme(newTheme, themeColor);
+  });
+});

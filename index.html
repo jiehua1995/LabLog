@@ -1,54 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Markdown Generator</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
-  <script src="js/loadSettings.js"></script>
-  
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/theme-toggle.css">
 </head>
 <body>
-  <h1>Markdown Generator</h1>
-  
-  <div class="input-group">
-    <label for="dateInput">Date</label>
-    <input type="date" id="dateInput">
+  <div class="container">
+    <!-- 表单部分 -->
+    <div class="form-container">
+      <div class="input-group-row">
+        <!-- 第一列：Date 和 Category -->
+        <div class="input-column">
+          <div class="input-group">
+            <label for="dateInput">Date</label>
+            <input type="date" id="dateInput" />
+          </div>
+          <div class="input-group">
+            <label for="categoryInput">Category</label>
+            <select id="categoryInput">
+              <!-- Category options will be populated here -->
+            </select>
+          </div>
+        </div>
+        <!-- 第二列：Author 和 Email -->
+        <div class="input-column">
+          <div class="input-group">
+            <label for="authorInput">Author</label>
+            <input type="text" id="authorInput" />
+          </div>
+          <div class="input-group">
+            <label for="emailInput">Email</label>
+            <input type="email" id="emailInput" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Markdown Content 部分 -->
+      <div class="input-group">
+        <label for="markdownContent">Markdown Content</label>
+        <textarea id="markdownContent" name="markdownContent"></textarea>
+      </div>
+
+      <!-- Save as Markdown 按钮单独一行 -->
+      <div class="save-button-container">
+        <button id="saveButton">Save as Markdown</button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p id="jsonFilePath">Configuration File: <a href="#">F:\GitHub_mine\LabLog\settings.json</a></p>
+      <p>© 2024 Lab Log | Powered by <a href="mailto:Jie.Hua@lmu.de">Jie Hua</a></p>
+    </footer>
+
+    <!-- 主题切换按钮 -->
+    <button data-toggle-theme="dark,light" data-act-class="ACTIVECLASS"></button>
   </div>
 
-  <div class="input-group">
-    <label for="categoryInput">Category</label>
-    <select id="categoryInput">
-      <option>Experimental log</option>
-      <option>Discussion</option>
-      <option>Reading</option>
-      <option>Inspiration</option>
-    </select>
-  </div>
-
-  <div class="input-group">
-    <label for="authorInput">Author</label>
-    <input type="text" id="authorInput" value="">
-  </div>
-
-  <div class="input-group">
-    <label for="emailInput">Email</label>
-    <input type="text" id="emailInput" value="">
-  </div>
-
-  <div class="input-group">
-    <label for="markdownContent">Markdown Content</label>
-    <textarea id="markdownContent" name="markdownContent" style="height: 300px;"></textarea>
-  </div>
-  
-  
-  
-
-  <button id="saveButton">Save as Markdown</button>
-
-  <footer>
-    <p id="jsonFilePath" style="font-size: small;"></p>
-    <p>© 2024 Lab Log | Powered by <a href="mailto:Jie.Hua@lmu.de">Jie Hua</a></p>
-  </footer>
-
+  <script src="js/loadSettings.js"></script>
   <script src="js/themeToggle.js"></script>
 </body>
 </html>
