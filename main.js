@@ -53,3 +53,24 @@ ipcMain.handle('get-settings-path', (event) => {
   const settingsPath = path.join(app.getPath('userData'), 'settings.json');
   return settingsPath;
 });
+
+// IPC 主进程处理，用于保存 Markdown 文件
+ipcMain.on('save-markdown', (event, content, fileName) => {
+  const { dialog } = require('electron');
+
+  dialog.showSaveDialog({
+    title: 'Save Markdown File',
+    defaultPath: path.join(app.getPath('desktop'), fileName),
+    filters: [
+      { name: 'Markdown Files', extensions: ['md'] },
+      { name: 'All Files', extensions: ['*'] }
+    ]
+  }).then(file => {
+    if (!file.canceled) {
+      fs.writeFileSync(file.filePath.toString(), content);
+      event.sender.send('save-markdown-reply', 'File saved successfully.');
+    }
+  }).catch(err => {
+    console.error('Failed to save the file:', err);
+  });
+});

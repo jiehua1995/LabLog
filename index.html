@@ -1,9 +1,9 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self'; object-src 'self'">
   <title>Markdown Generator</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="css/theme-toggle.css">
@@ -62,7 +62,9 @@
   </div>
 
   <!-- 引入 js 文件 -->
+  <script src="js/ipcRenderer.js"></script>
   <script src="js/loadSettings.js"></script>
   <script src="js/themeToggle.js"></script>
+  <script src="js/saveMarkdown.js"></script>
 </body>
 </html>
