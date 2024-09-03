@@ -1,16 +1,16 @@
 appId: com.mdgenerator.hj
 productName: MdGenerator
-copyright: Copyright © 2024 Jie Hua
+copyright: Copyright © 2024, Hua 
 directories:
   output: dist
+  buildResources: build
 files:
   - main.js
   - index.html
   - style.css
   - css/**
   - js/**
-  - node_modules/**
-  - package.json
+
 win:
   target: nsis
   icon: build/icon.ico
@@ -22,13 +22,8 @@ linux:
     - AppImage
     - deb
   icon: build/icon.png
-publish:
-  provider: github
-  releaseType: release
 nsis:
   oneClick: false
   perMachine: true
   allowToChangeInstallationDirectory: true
-extraMetadata:
-  author: "Jie Hua"
-  description: "A Markdown Generator Tool"
+  deleteAppDataOnUninstall: true
