@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, shell, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
@@ -21,6 +21,7 @@ function createWindow() {
   mainWindow.loadFile('index.html');
 }
 
+// 复制 settings.json 文件到用户数据目录
 function copySettingsFile() {
   const userDataPath = app.getPath('userData'); // 获取用户数据目录
   const settingsSrcPath = path.join(__dirname, 'settings.json'); // 原始 settings.json 文件路径
@@ -55,21 +56,28 @@ ipcMain.handle('get-settings-path', (event) => {
   return settingsPath;
 });
 
-// IPC 主进程处理，用于保存 Markdown 文件
 ipcMain.on('save-markdown', (event, content, fileName) => {
+  console.log('File Name:', fileName);  // 这行用来检查 fileName 是否正确传递
   const { dialog } = require('electron');
 
   dialog.showSaveDialog({
     title: 'Save Markdown File',
-    defaultPath: path.join(app.getPath('desktop'), fileName),
+    defaultPath: path.join(app.getPath('userData'), fileName || 'defaultFileName.md'),
     filters: [
       { name: 'Markdown Files', extensions: ['md'] },
       { name: 'All Files', extensions: ['*'] }
     ]
   }).then(file => {
-    if (!file.canceled) {
+    if (!file.canceled && file.filePath) {
       fs.writeFileSync(file.filePath.toString(), content);
       event.sender.send('save-markdown-reply', 'File saved successfully.');
+
+      // 自动打开保存的文件
+      shell.openPath(file.filePath.toString()).catch(err => {
+        console.error('Failed to open the file:', err);
+      });
+    } else {
+      console.error('File path is undefined or saving was canceled');
     }
   }).catch(err => {
     console.error('Failed to save the file:', err);
