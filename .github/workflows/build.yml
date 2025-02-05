@@ -45,10 +45,6 @@ jobs:
         run: npm install
         shell: bash
         working-directory: .
-      
-      - name: Build CSS
-        run: npm run build-css
-        working-directory: .
 
       - name: Build Electron app for ${{ matrix.os }}
         run: |
