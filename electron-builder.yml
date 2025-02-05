@@ -12,16 +12,28 @@ files:
   - js/**
 
 win:
-  target: nsis
-  icon: build/icon.ico
+  target:
+    - nsis
+  artifactName: "${productName}-v${version}-${os}-${arch}.${ext}"
+  icon: assets/icon.ico
+
 mac:
-  target: dmg
-  icon: build/icon.icns
+  target:
+    - dmg
+  artifactName: "${productName}-v${version}-${os}-${arch}.${ext}"
+  icon: assets/icon.icns
+  hardenedRuntime: false
+  gatekeeperAssess: false
+  darkModeSupport: true
+
 linux:
   target:
-    - AppImage
     - deb
-  icon: build/icon.png
+    - rpm
+  maintainer: "Jie Hua <fdjiehua@gmail.com>"
+  artifactName: "${productName}-v${version}-${os}-${arch}.${ext}"
+  icon: assets/icon.png
+
 nsis:
   oneClick: false
   perMachine: true
