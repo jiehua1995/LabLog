@@ -10,6 +10,8 @@ files:
   - style.css
   - css/**
   - js/**
+publish: never
+
 
 win:
   target:
