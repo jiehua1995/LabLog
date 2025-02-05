@@ -17,6 +17,7 @@ win:
     - nsis
   artifactName: "${productName}-v${version}-${os}-${arch}.${ext}"
   icon: assets/icon.ico
+  publish: null
 
 mac:
   target:
@@ -35,6 +36,7 @@ linux:
   maintainer: "Jie Hua <fdjiehua@gmail.com>"
   artifactName: "${productName}-v${version}-${os}-${arch}.${ext}"
   icon: assets/icon.png
+  publish: null
 
 nsis:
   oneClick: false
