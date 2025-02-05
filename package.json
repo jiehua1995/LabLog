@@ -1,7 +1,6 @@
 {
   "name": "LabLog",
   "version": "0.0.2",
-  "author": "jiehua",
   "description": "  ",
   "main": "main.js",
   "scripts": {
@@ -9,6 +8,11 @@
     "start": "electron .",
     "build": "electron-builder"
   },
+  "author": {
+    "name": "Jie Hua",
+    "email": "Jie.Hua@lmu.de"
+  },
+  "homepage": "https://github.com/jiehua1995/Lablog",
   "keywords": [],
   "license": "MIT",
   "devDependencies": {
