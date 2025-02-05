@@ -16,7 +16,7 @@
   "keywords": [],
   "license": "MIT",
   "devDependencies": {
-    "electron": "^32.0.1",
+    "electron": "^32.3.0",
     "electron-builder": "^24.13.3"
   },
   "repository": {

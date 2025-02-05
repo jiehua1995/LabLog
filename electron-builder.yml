@@ -26,7 +26,7 @@ mac:
   hardenedRuntime: false
   gatekeeperAssess: false
   darkModeSupport: true
-  publish: never
+  publish: null
 
 linux:
   target:
