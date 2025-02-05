@@ -1,0 +1,69 @@
+name: Build and Package Applications
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-electron:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Remove node_modules
+        run: rm -rf node_modules pacakge-lock.json
+        shell: bash
+        working-directory: .
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: .
+      
+      - name: Install npm-check-updates
+        run: npm install -g npm-check-updates
+        working-directory: .
+
+      - name: Update dependencies
+        run: ncu -u
+        working-directory: .
+
+      - name: Install updated dependencies
+        run: npm install
+        shell: bash
+        working-directory: .
+      
+      - name: Build CSS
+        run: npm run build-css
+        working-directory: .
+
+      - name: Build Electron app for ${{ matrix.os }}
+        run: |
+          if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+            npm run build
+          elif [ "${{ matrix.os }}" == "windows-latest" ]; then
+            npm run build
+          elif [ "${{ matrix.os }}" == "macos-latest" ]; then
+            npm run build
+          fi
+        shell: bash
+        working-directory: .
+
+      - name: Upload Electron Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: electron-dist-${{ matrix.os }}
+          path: electron/dist/
