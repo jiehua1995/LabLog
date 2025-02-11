@@ -8,6 +8,7 @@ files:
   - main.js
   - index.html
   - style.css
+  - build/**
   - css/**
   - js/**
 
