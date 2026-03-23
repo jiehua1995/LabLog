@@ -64,6 +64,18 @@ jobs:
           fi
         shell: bash
 
+      - name: Install npm-check-updates
+        run: npm install -g npm-check-updates
+        shell: bash
+
+      - name: Update dependencies
+        run: ncu -u
+        shell: bash
+
+      - name: Reinstall dependencies after update
+        run: npm install
+        shell: bash
+
       - name: Install Linux packaging dependencies
         if: runner.os == 'Linux'
         run: |
