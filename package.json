@@ -1,12 +1,14 @@
 {
-  "name": "LabLog",
-  "version": "0.0.2",
-  "description": "  ",
+  "name": "lablog",
+  "version": "0.1.1",
+  "description": "Desktop markdown template generator for lab notes.",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron .",
-    "build": "electron-builder"
+    "start": "npm run build:css && electron .",
+    "build:css": "tailwindcss -i ./css/input.css -o ./css/output.css --minify",
+    "build:css:watch": "tailwindcss -i ./css/input.css -o ./css/output.css --watch",
+    "dist": "npm run build:css && electron-builder --publish never",
+    "release": "npm run build:css && electron-builder"
   },
   "author": {
     "name": "Jie Hua",
@@ -16,8 +18,16 @@
   "keywords": [],
   "license": "MIT",
   "devDependencies": {
-    "electron": "^32.3.0",
-    "electron-builder": "^24.13.3"
+    "@tailwindcss/cli": "^4.2.2",
+    "daisyui": "^5.5.19",
+    "electron": "^41.0.3",
+    "tailwindcss": "^4.2.2"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.2.0",
+    "electron-updater": "^6.8.3",
+    "theme-change": "^2.5.0",
+    "vditor": "^3.11.2"
   },
   "repository": {
     "type": "git",

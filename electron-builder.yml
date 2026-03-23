@@ -1,45 +1,54 @@
-appId: com.mdgenerator.hj
-productName: MdGenerator
-copyright: Copyright © 2024, Hua 
+appId: com.lablog.app
+productName: LabLog
+copyright: Copyright © 2026, Jie Hua
 directories:
   output: dist
   buildResources: build
+asar: true
+compression: maximum
 files:
   - main.js
+  - preload.js
   - index.html
   - style.css
+  - settings.json
   - build/**
   - css/**
   - js/**
+  - package.json
 
+publish:
+  provider: github
+  owner: jiehua1995
+  repo: LabLog
 
 win:
   target:
     - nsis
-  artifactName: "${productName}-v${version}-${os}-${arch}.${ext}"
   icon: build/icon.ico
-  publish: null
 
 mac:
   target:
     - dmg
+    - zip
   artifactName: "${productName}-v${version}-${os}-${arch}.${ext}"
   icon: build/icon.icns
   hardenedRuntime: false
   gatekeeperAssess: false
   darkModeSupport: true
-  publish: null
 
 linux:
   target:
+    - AppImage
     - deb
     - rpm
+    - tar.gz
   maintainer: "Jie Hua <fdjiehua@gmail.com>"
   artifactName: "${productName}-v${version}-${os}-${arch}.${ext}"
   icon: build/icon.png
-  publish: null
 
 nsis:
+  artifactName: "${productName}-Setup-v${version}-${os}-${arch}.${ext}"
   oneClick: false
   perMachine: true
   allowToChangeInstallationDirectory: true

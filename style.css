@@ -1,152 +1,298 @@
-/* Light mode (Cupcake theme inspired) */
+html,
 body {
-  font-family: Arial, sans-serif;
-  padding: 0;
   margin: 0;
-  background-color: #F2F7FA;
-  color: #333; /* 深灰色文本 */
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-/* Dark mode (Pastel Gothic inspired) */
-body.dark-mode {
-  background-color: #3E3E3E; /* 暗灰色背景 */
-  color: #E0E0E0; /* 浅灰色文本 */
-}
-
-.container {
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-}
-
-.form-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-/* 用于两列并排的布局 */
-.input-group-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
-}
-
-.input-column {
-  display: flex;
-  flex-direction: column;
-  width: 48%;
-}
-
-.input-group {
-  margin-bottom: 15px;
-}
-
-.input-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-  font-size: 14px;
-  color: #555; /* 中性灰色文本 */
-}
-
-body.dark-mode .input-group label {
-  color: #CCCCCC; /* 浅灰色文本 */
-}
-
-.input-group input, 
-.input-group select, 
-.input-group textarea {
   width: 100%;
-  padding: 10px;
-  font-size: 14px;
-  box-sizing: border-box;
-  border: 1px solid #D1C4E9; /* 淡紫色边框 */
+  height: 100%;
+  font-family: "Segoe UI", "Noto Sans", sans-serif;
+  overflow: hidden;
+  background: transparent;
+}
+
+body {
+  border-radius: 0;
+}
+
+.scrollable-pane {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--color-base-content) 35%, transparent)
+    color-mix(in oklab, var(--color-base-200) 65%, transparent);
+}
+
+.scrollable-pane::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.scrollable-pane::-webkit-scrollbar-track {
+  background: color-mix(in oklab, var(--color-base-200) 72%, transparent);
+  border-radius: 9999px;
+}
+
+.scrollable-pane::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--color-base-content) 32%, transparent);
+  border-radius: 9999px;
+}
+
+.window-frame {
+  position: relative;
+  isolation: isolate;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+}
+
+body.window-maximized .window-frame {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+
+.ambient-bg {
+  display: none;
+}
+
+.drag-region {
+  -webkit-app-region: drag;
+  app-region: drag;
+}
+
+.no-drag,
+.no-drag * {
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}
+
+.window-btn {
+  width: 32px;
+  height: 26px;
   border-radius: 8px;
-  background-color: #FFF; /* 白色背景 */
-  color: #333; /* 深灰色文本 */
-}
-
-body.dark-mode .input-group input, 
-body.dark-mode .input-group select, 
-body.dark-mode .input-group textarea {
-  background-color: #4E4E4E; /* 暗灰色背景 */
-  color: #E0E0E0; /* 浅灰色文本 */
-  border: 1px solid #8E8E8E; /* 暗灰色边框 */
-}
-
-textarea {
-  height: 150px;
-  resize: vertical;
-}
-
-.save-button-container {
-  text-align: center;
-  margin-top: 20px;
-}
-
-button {
-  padding: 10px 20px;
-  background-color: #FF80AB; /* 柔和的粉色按钮 */
-  color: white;
-  border: none;
-  border-radius: 8px;
+  border: 1px solid color-mix(in oklab, currentcolor 18%, transparent);
+  background: color-mix(in oklab, var(--color-base-100) 86%, transparent);
+  color: var(--color-base-content);
+  font-size: 12px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: transform 120ms ease, background-color 120ms ease;
+}
+
+.window-btn:hover {
+  transform: translateY(-1px);
+  background: color-mix(in oklab, var(--color-base-300) 72%, transparent);
+}
+
+.window-btn-close:hover {
+  background: color-mix(in oklab, var(--color-error) 80%, transparent);
+  color: var(--color-error-content);
+}
+
+.status-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 12px;
+  padding: 8px 12px;
+  border: 1px solid color-mix(in oklab, currentcolor 15%, transparent);
+  background: color-mix(in oklab, var(--color-base-100) 65%, transparent);
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background: color-mix(in oklab, var(--color-warning) 88%, transparent);
+  box-shadow: 0 0 0 6px color-mix(in oklab, var(--color-warning) 16%, transparent);
+}
+
+.status-dot-ok {
+  background: color-mix(in oklab, var(--color-success) 88%, transparent);
+  box-shadow: 0 0 0 6px color-mix(in oklab, var(--color-success) 14%, transparent);
+}
+
+.status-dot-fail {
+  background: color-mix(in oklab, var(--color-error) 88%, transparent);
+  box-shadow: 0 0 0 6px color-mix(in oklab, var(--color-error) 14%, transparent);
+}
+
+.tab-panel {
+  border-radius: 14px;
+  border: 1px solid color-mix(in oklab, currentcolor 12%, transparent);
+  background: color-mix(in oklab, var(--color-base-100) 80%, transparent);
+  padding: 1rem;
+}
+
+.editor-card {
+  border-radius: 14px;
+  border: 1px solid color-mix(in oklab, var(--color-base-content) 12%, transparent);
+  background: color-mix(in oklab, var(--color-base-100) 90%, transparent);
+  padding: 0.75rem;
+}
+
+.editor-card-fill {
+  min-height: 18rem;
+}
+
+.editor-card-fill .vditor {
+  height: 100%;
+  border: 0;
+  background: var(--color-base-100);
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-card-fill .vditor-reset {
   font-size: 14px;
-  transition: background-color 0.3s;
 }
 
-body.dark-mode button {
-  background-color: #FF4081; /* 深粉色按钮背景 */
-  color: #FFFFFF; /* 白色文本 */
+.editor-card-fill .vditor-toolbar {
+  border-bottom: 1px solid color-mix(in oklab, var(--color-base-content) 10%, transparent);
+  background: var(--color-base-200) !important;
 }
 
-button:hover {
-  background-color: #FF4081; /* 深粉色悬停背景 */
+.editor-card-fill .vditor-toolbar .vditor-toolbar__item {
+  border-radius: 8px;
+  color: var(--color-base-content) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
-body.dark-mode button:hover {
-  background-color: #FF80AB; /* 浅粉色悬停背景 */
+.editor-card-fill .vditor-toolbar button,
+.editor-card-fill .vditor-toolbar .vditor-tooltipped {
+  color: var(--color-base-content) !important;
+  opacity: 1 !important;
 }
 
-/* Footer 样式 */
-footer {
-  text-align: center;
-  padding-top: 10px;
-  padding-bottom: 0;
-  font-size: small;
-  line-height: 1.2;
-  margin-top: auto; /* 确保 footer 始终在页面底部 */
+.editor-card-fill .vditor-toolbar .vditor-toolbar__item svg,
+.editor-card-fill .vditor-toolbar .vditor-toolbar__item svg * {
+  fill: currentcolor !important;
+  stroke: currentcolor !important;
+  opacity: 1 !important;
 }
 
-#jsonFilePath, #jsonFilePath a, footer a {
-  color: #888;
+.editor-card-fill .vditor-toolbar .vditor-toolbar__item i {
+  color: currentcolor !important;
+  font-size: 14px;
+  line-height: 1;
+  display: inline-block;
 }
 
-body.dark-mode #jsonFilePath, 
-body.dark-mode #jsonFilePath a,
-body.dark-mode footer a {
-  color: #8BE9FD; /* 更加明亮的浅蓝色 */
+.editor-card-fill .vditor-toolbar .vditor-toolbar__item:hover {
+  background: color-mix(in oklab, var(--color-base-content) 14%, transparent);
 }
 
-/* 滚动条样式 */
-::-webkit-scrollbar {
-  width: 8px;
+.editor-card-fill .vditor-toolbar .vditor-toolbar__item--current,
+.editor-card-fill .vditor-toolbar .vditor-toolbar__item--current:hover {
+  background: color-mix(in oklab, var(--color-primary) 82%, transparent);
+  color: var(--color-primary-content) !important;
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: #FFB3C1; /* 浅粉色滚动条 */
-  border-radius: 4px;
+.editor-card .join .btn {
+  min-width: 5.5rem;
+  font-weight: 700;
 }
 
-body.dark-mode ::-webkit-scrollbar-thumb {
-  background-color: #757575; /* 深灰色滚动条 */
+.editor-card-fill .vditor-content {
+  background: var(--color-base-100);
+  overflow-y: auto;
 }
 
-body.dark-mode ::-webkit-scrollbar-thumb:hover {
-  background-color: #9E9E9E; /* 浅灰色滚动条悬停 */
+.editor-card-fill .vditor .vditor-ir,
+.editor-card-fill .vditor .vditor-wysiwyg,
+.editor-card-fill .vditor .vditor-sv,
+.editor-card-fill .vditor .vditor-sv__editor,
+.editor-card-fill .vditor .vditor-reset {
+  background: var(--color-base-100);
+  color: var(--color-base-content);
 }
+
+.editor-card-fill .vditor .vditor-input,
+.editor-card-fill .vditor textarea {
+  background: var(--color-base-100);
+  color: var(--color-base-content);
+}
+
+.editor-card-head {
+  margin-bottom: 0.5rem;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--color-base-content) 66%, transparent);
+}
+
+.flip-card {
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.flip-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px color-mix(in oklab, var(--color-base-content) 10%, transparent);
+}
+
+.reveal {
+  animation: card-reveal 380ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes card-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tabs .tab {
+  transition: transform 120ms ease, opacity 120ms ease;
+}
+
+.tabs .tab:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+#settingsDialog .modal-box {
+  border: 1px solid color-mix(in oklab, var(--color-base-content) 12%, transparent);
+  border-radius: 1rem;
+}
+
+#settingsDialog .tab-panel .form-control {
+  margin-bottom: 1.2rem;
+}
+
+#settingsDialog #panelUpdates > .form-control,
+#settingsDialog #panelUpdates > .label,
+#settingsDialog #panelUpdates > .flex,
+#settingsDialog #panelUpdates > .alert {
+  margin-bottom: 0.55rem;
+}
+
+#settingsDialog #panelUpdates .updates-startup-row {
+  margin-top: 0.7rem;
+}
+
+#settingsDialog #panelTemplates .form-control {
+  margin-bottom: 1.45rem;
+}
+
+#settingsDialog #panelTemplates .grid.grid-cols-1.gap-3 {
+  margin-top: 0.5rem;
+}
+
+#settingsDialog .tab-panel .label {
+  padding-top: 0.25rem;
+  padding-bottom: 0.35rem;
+}
+
+#settingsDialog .tab-panel .join {
+  gap: 0.35rem;
+}
+
+/* Legacy textarea/preview styles removed after Vditor migration */

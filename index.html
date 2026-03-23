@@ -1,72 +1,235 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="script-src 'self'; object-src 'self'">
-  <title>Markdown Generator</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data: blob:; object-src 'none'">
+  <title>LabLog Generator</title>
+  <link rel="stylesheet" href="css/output.css">
+  <link rel="stylesheet" href="node_modules/vditor/dist/index.css">
+  <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="css/theme-toggle.css">
-  <!-- icon -->
   <link rel="icon" href="build/icon.png" type="image/x-icon">
 </head>
-<body>
-  <div class="container">
-    <!-- 表单部分 -->
-    <div class="form-container">
-      <div class="input-group-row">
-        <!-- 第一列：Date 和 Category -->
-        <div class="input-column">
-          <div class="input-group">
-            <label for="dateInput">Date</label>
-            <input type="date" id="dateInput" />
+<body data-theme="corporate" class="h-full w-full overflow-hidden bg-base-300">
+  <div class="window-frame flex h-full w-full flex-col overflow-hidden bg-base-200/95 backdrop-blur-xl">
+    <header class="drag-region flex h-11 items-center justify-between border-b border-base-content/10 bg-base-100/90 px-3">
+      <div class="flex items-center gap-2">
+        <img src="build/icon.png" alt="LabLog Generator" class="h-5 w-5 rounded" />
+        <span class="text-sm font-semibold tracking-wide">LabLog Generator</span>
+      </div>
+      <div class="no-drag flex items-center gap-1">
+        <button id="windowMinimizeButton" class="window-btn" type="button" aria-label="Minimize">_</button>
+        <button id="windowMaximizeButton" class="window-btn" type="button" aria-label="Maximize">▢</button>
+        <button id="windowCloseButton" class="window-btn window-btn-close" type="button" aria-label="Close">✕</button>
+      </div>
+    </header>
+
+    <div class="mx-auto flex h-full w-full max-w-7xl flex-1 flex-col gap-4 overflow-hidden p-4 lg:p-6">
+      <header class="glass reveal card rounded-2xl bg-base-100/70 shadow-xl">
+        <div class="card-body py-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 class="text-2xl font-bold tracking-tight">LabLog Generator</h1>
+            <p class="text-sm text-base-content/70">Generate markdown records with reusable templates.</p>
           </div>
-          <div class="input-group">
-            <label for="categoryInput">Category</label>
-            <select id="categoryInput">
-              <!-- Category options will be populated here -->
-            </select>
+          <div class="mt-3 flex flex-wrap items-center gap-2 sm:mt-0">
+            <select id="quickThemeSelect" data-choose-theme class="select select-bordered select-sm w-44"></select>
+            <button id="openSettingsButton" class="btn btn-primary btn-sm" type="button">Settings</button>
           </div>
         </div>
-        <!-- 第二列：Author 和 Email -->
-        <div class="input-column">
-          <div class="input-group">
-            <label for="authorInput">Author</label>
-            <input type="text" id="authorInput" />
-          </div>
-          <div class="input-group">
-            <label for="emailInput">Email</label>
-            <input type="email" id="emailInput" />
-          </div>
-        </div>
-      </div>
+      </header>
 
-      <!-- Markdown Content 部分 -->
-      <div class="input-group">
-        <label for="markdownContent">Markdown Content</label>
-        <textarea id="markdownContent" name="markdownContent"></textarea>
-      </div>
+      <main class="grid min-h-0 flex-1 grid-cols-1 gap-4 overflow-hidden lg:grid-cols-2">
+        <section class="reveal card bg-base-100 shadow-xl" style="animation-delay: 80ms;">
+          <div class="card-body">
+            <h2 class="card-title text-lg">Document Metadata</h2>
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <label class="form-control w-full">
+                <div class="label"><span class="label-text">Date</span></div>
+                <input type="date" id="dateInput" class="input input-bordered w-full" />
+              </label>
+              <label class="form-control w-full">
+                <div class="label"><span class="label-text">Category</span></div>
+                <select id="categoryInput" class="select select-bordered w-full"></select>
+              </label>
+              <label class="form-control w-full">
+                <div class="label"><span class="label-text">Author</span></div>
+                <input type="text" id="authorInput" class="input input-bordered w-full" />
+              </label>
+              <label class="form-control w-full">
+                <div class="label"><span class="label-text">Email</span></div>
+                <input type="email" id="emailInput" class="input input-bordered w-full" />
+              </label>
+            </div>
 
-      <!-- Save as Markdown 按钮单独一行 -->
-      <div class="save-button-container">
-        <button id="saveButton">Save as Markdown</button>
-      </div>
+            <div class="mt-4 flex flex-wrap items-center gap-3">
+              <button id="saveButton" class="btn btn-primary" type="button">Save as Markdown</button>
+              <div class="status-card">
+                <div class="status-dot" id="saveStatusDot"></div>
+                <div>
+                  <p class="text-[11px] uppercase tracking-widest text-base-content/60">Status</p>
+                  <p id="saveStatus" class="text-sm font-medium">Not saved yet</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="reveal card min-h-0 bg-base-100 shadow-xl" style="animation-delay: 140ms;">
+          <div class="card-body min-h-0 flex flex-col gap-3">
+            <div class="flex items-center justify-between gap-2">
+              <h2 class="card-title text-lg">Content</h2>
+              <div class="join">
+                <button id="mainModeSource" class="btn join-item btn-sm btn-primary" type="button">Source</button>
+                <button id="mainModeVisual" class="btn join-item btn-sm btn-outline" type="button">Visual</button>
+              </div>
+            </div>
+            <div class="editor-card editor-card-fill min-h-0 flex-1">
+              <div id="mainEditor" class="h-full"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="reveal shrink-0 rounded-2xl border border-base-content/10 bg-base-100 px-4 py-3 text-center shadow" style="animation-delay: 180ms;">
+        <span class="badge badge-ghost badge-sm uppercase tracking-widest">Lab Log Generator</span>
+      </footer>
     </div>
-
-    <!-- Footer -->
-    <footer>
-      <p id="jsonFilePath">Configuration File: <a href="#">F:\GitHub_mine\LabLog\settings.json</a></p>
-      <p>© 2024 Lab Log | Powered by <a href="mailto:Jie.Hua@lmu.de">Jie Hua</a></p>
-    </footer>
-
-    <!-- 主题切换按钮 -->
-    <button data-toggle-theme="dark,light" data-act-class="ACTIVECLASS"></button>
   </div>
 
-  <!-- 引入 js 文件 -->
-  <script src="js/ipcRenderer.js"></script>
-  <script src="js/loadSettings.js"></script>
-  <script src="js/themeToggle.js"></script>
-  <script src="js/saveMarkdown.js"></script>
+  <dialog id="settingsDialog" class="modal">
+    <div class="modal-box w-11/12 max-w-6xl">
+      <h3 class="mb-4 text-xl font-semibold">Settings</h3>
+
+      <div role="tablist" class="tabs tabs-boxed tabs-md mb-6 gap-1 rounded-xl bg-base-200/80 p-1">
+        <button id="tabGeneral" class="tab tab-active" role="tab" type="button">General</button>
+        <button id="tabTemplates" class="tab" role="tab" type="button">Templates</button>
+        <button id="tabUpdates" class="tab" role="tab" type="button">Updates</button>
+        <button id="tabAbout" class="tab" role="tab" type="button">About</button>
+      </div>
+
+      <section id="panelGeneral" class="tab-panel space-y-6">
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <label class="form-control w-full">
+            <div class="label"><span class="label-text">Author</span></div>
+            <input id="settingAuthor" class="input input-bordered" type="text" />
+          </label>
+          <label class="form-control w-full">
+            <div class="label"><span class="label-text">Email</span></div>
+            <input id="settingEmail" class="input input-bordered" type="email" />
+          </label>
+        </div>
+        <label class="form-control w-full max-w-md">
+          <div class="label"><span class="label-text">Default Theme</span></div>
+          <select id="settingTheme" class="select select-bordered"></select>
+        </label>
+      </section>
+
+      <section id="panelTemplates" class="tab-panel hidden space-y-6">
+        <div class="grid grid-cols-1 gap-7 md:grid-cols-[340px_1fr]">
+          <div class="space-y-6">
+            <label class="form-control w-full">
+              <div class="label"><span class="label-text">Template Category</span></div>
+              <select id="templateCategorySelect" class="select select-bordered"></select>
+            </label>
+            <div class="grid grid-cols-1 gap-3">
+              <button id="addTemplateButton" class="btn btn-outline btn-sm" type="button">Add Category</button>
+              <button id="renameTemplateButton" class="btn btn-outline btn-sm" type="button">Rename Category</button>
+              <button id="deleteTemplateButton" class="btn btn-error btn-outline btn-sm" type="button">Delete Category</button>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <div class="flex items-center justify-between gap-2">
+              <h4 class="text-sm font-semibold tracking-wide">Template Editor</h4>
+              <div class="join">
+                <button id="templateModeSource" class="btn join-item btn-sm btn-primary" type="button">Source</button>
+                <button id="templateModeVisual" class="btn join-item btn-sm btn-outline" type="button">Visual</button>
+              </div>
+            </div>
+
+            <div class="editor-card editor-card-fill min-h-0">
+              <div id="templateEditor" class="h-full"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="panelUpdates" class="tab-panel hidden space-y-7">
+        <label class="form-control w-full max-w-sm">
+          <div class="label"><span class="label-text">Update Mode</span></div>
+          <select id="settingUpdateMode" class="select select-bordered">
+            <option value="manual">Manual</option>
+            <option value="auto">Auto Download</option>
+          </select>
+        </label>
+
+        <label class="updates-startup-row label cursor-pointer justify-start gap-3 rounded-lg border border-base-content/10 p-3 w-full">
+          <input id="settingCheckOnStartup" class="checkbox" type="checkbox" />
+          <span class="label-text">Check for updates on startup</span>
+        </label>
+
+        <div class="flex flex-wrap gap-3">
+          <button id="checkUpdatesButton" class="btn btn-outline btn-sm" type="button">Check for Updates</button>
+          <button id="downloadUpdateButton" class="btn btn-outline btn-sm" type="button">Download Update</button>
+          <button id="installUpdateButton" class="btn btn-success btn-sm" type="button">Install and Restart</button>
+        </div>
+        <div id="updateStatus" class="alert alert-info text-sm">Update status: Idle</div>
+      </section>
+
+      <section id="panelAbout" class="tab-panel hidden space-y-5">
+        <div class="grid grid-cols-1 gap-5">
+          <div class="rounded-xl border border-base-content/15 bg-base-100 p-5">
+            <h4 class="mb-3 text-lg font-semibold">About LabLog Generator</h4>
+            <p class="text-sm text-base-content/70 mb-4">
+              LabLog Generator is a desktop markdown assistant designed for researchers and engineers to efficiently create and manage lab notes with reusable templates.
+            </p>
+            <div class="space-y-3">
+              <div>
+                <p class="text-xs uppercase tracking-wider text-base-content/60">Version</p>
+                <p class="text-sm font-medium">0.1.0</p>
+              </div>
+              <div>
+                <p class="text-xs uppercase tracking-wider text-base-content/60">Features</p>
+                <ul class="text-sm text-base-content/80 mt-1 list-disc list-inside space-y-1">
+                  <li>Markdown editor with live preview</li>
+                  <li>Customizable template libraries</li>
+                  <li>Auto-update support</li>
+                  <li>Theme switching with daisyUI</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-xl border border-base-content/15 bg-base-100 p-5">
+            <h4 class="mb-3 text-lg font-semibold">Copyright & License</h4>
+            <p id="copyrightLine" class="text-sm text-base-content/80 mb-3"></p>
+            <p class="text-xs text-base-content/60">LabLog Generator is open source software. For source code, issues, and contributions, visit the GitHub repository.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="modal-action">
+        <button id="saveSettingsButton" class="btn btn-primary" type="button">Save Settings</button>
+        <form method="dialog">
+          <button class="btn" type="submit">Close</button>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="templateNameDialog" class="modal">
+    <div class="modal-box w-11/12 max-w-md">
+      <h3 id="templateNameTitle" class="mb-3 text-lg font-semibold">Template Name</h3>
+      <input id="templateNameInput" class="input input-bordered w-full" type="text" />
+      <div class="modal-action">
+        <button id="templateNameConfirm" class="btn btn-primary" type="button">Confirm</button>
+        <button id="templateNameCancel" class="btn" type="button">Cancel</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="node_modules/theme-change/index.js"></script>
+  <script src="node_modules/vditor/dist/index.min.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>

@@ -20,6 +20,14 @@
       "content": "[toc]\n\n## Content\n\n<button style='border-radius: 15px; transition: background-color 0.3s; cursor: pointer'>[:file_folder:  File Path](./)</button>"
     }
   ],
-  "theme": "auto",  
-  "themeColor": "#8abcd1"
+  "Theme": "corporate",
+  "Updates": {
+    "mode": "manual",
+    "checkOnStartup": true
+  },
+  "Copyright": {
+    "owner": "Jie Hua",
+    "year": 2026,
+    "license": "MIT"
+  }
 }
