@@ -42,7 +42,6 @@ linux:
     - AppImage
     - deb
     - rpm
-    - flatpak
     - tar.gz
   maintainer: "Jie Hua <fdjiehua@gmail.com>"
   artifactName: "${productName}-v${version}-${os}-${arch}.${ext}"

@@ -43,7 +43,7 @@ jobs:
             build_args: "--mac dmg --x64"
           - name: linux
             os: ubuntu-latest
-            build_args: "--linux AppImage deb rpm flatpak tar.gz --x64 --arm64"
+            build_args: "--linux AppImage deb rpm tar.gz --x64 --arm64"
 
     steps:
       - name: Checkout
@@ -80,7 +80,7 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y rpm flatpak flatpak-builder
+          sudo apt-get install -y rpm
         shell: bash
 
       - name: Build electron artifacts
@@ -98,7 +98,6 @@ jobs:
             dist/*.AppImage
             dist/*.deb
             dist/*.rpm
-            dist/*.flatpak
             dist/*.tar.gz
             dist/*.blockmap
             dist/latest*.yml
