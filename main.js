@@ -360,18 +360,42 @@ ipcMain.on('save-markdown', (event, content, fileName) => {
     ]
   }).then(file => {
     if (!file.canceled && file.filePath) {
-      fs.writeFile(file.filePath.toString(), content, 'utf8')
+      const savedPath = file.filePath.toString();
+      fs.writeFile(savedPath, content, 'utf8')
         .then(() => {
-          event.sender.send('save-markdown-reply', 'File saved successfully.');
+          event.sender.send('save-markdown-reply', { message: 'File saved successfully.', filePath: savedPath });
         })
         .catch((err) => {
           console.error('Failed to write markdown file:', err);
-          event.sender.send('save-markdown-reply', 'Failed to save file.');
+          event.sender.send('save-markdown-reply', { message: 'Failed to save file.', error: err?.message || String(err) });
         });
     } else {
+      event.sender.send('save-markdown-reply', { message: 'Save canceled.' });
       console.error('File path is undefined or saving was canceled');
     }
   }).catch(err => {
     console.error('Failed to save the file:', err);
+    try {
+      // Notify renderer about failure with error details when possible
+      event.sender.send('save-markdown-reply', { message: 'Failed to save file.', error: err?.message || String(err) });
+    } catch (e) {
+      // ignore if event.sender is not available
+    }
   });
+});
+
+ipcMain.handle('open-file', async (_, filePath) => {
+  try {
+    if (!filePath) return { success: false, error: 'No file path provided' };
+    const { shell } = require('electron');
+    const result = await shell.openPath(filePath);
+    // shell.openPath returns an empty string on success, or an error message on failure
+    if (typeof result === 'string' && result.length > 0) {
+      return { success: false, error: result };
+    }
+    return { success: true };
+  } catch (err) {
+    console.error('Failed to open file:', err);
+    return { success: false, error: err?.message || String(err) };
+  }
 });

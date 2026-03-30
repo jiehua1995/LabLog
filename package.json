@@ -1,6 +1,6 @@
 {
   "name": "lablog",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Desktop markdown template generator for lab notes.",
   "main": "main.js",
   "scripts": {

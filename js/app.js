@@ -12,6 +12,7 @@ const state = {
     main: 'sv',
     template: 'sv'
   }
+  ,lastSavedFilePath: null
 };
 
 const editors = {
@@ -395,9 +396,42 @@ function bindEvents() {
     window.lablogAPI.saveMarkdown(buildMarkdownOutput(), createDefaultFileName());
   });
 
-  window.lablogAPI.onSaveMarkdownReply((message) => {
-    const success = message.toLowerCase().includes('success');
-    updateSaveStatus(message, success ? 'ok' : 'fail');
+  window.lablogAPI.onSaveMarkdownReply((payload) => {
+    let messageText = 'Unknown result';
+    let filePath = null;
+    if (typeof payload === 'string') {
+      messageText = payload;
+    } else if (payload && typeof payload === 'object') {
+      messageText = payload.message || (payload.error ? `Error: ${payload.error}` : 'Unknown');
+      filePath = payload.filePath || null;
+    }
+
+    const success = typeof messageText === 'string' && messageText.toLowerCase().includes('success');
+    updateSaveStatus(messageText, success ? 'ok' : 'fail');
+
+    state.lastSavedFilePath = filePath;
+    if (filePath) {
+      els.saveStatus.style.textDecoration = 'underline';
+      els.saveStatus.style.cursor = 'pointer';
+      els.saveStatus.title = filePath;
+    } else {
+      els.saveStatus.style.textDecoration = 'none';
+      els.saveStatus.style.cursor = 'default';
+      els.saveStatus.title = '';
+    }
+  });
+
+  // Click the status text to open the saved markdown file (if available)
+  els.saveStatus.addEventListener('click', async () => {
+    if (!state.lastSavedFilePath) return;
+    try {
+      const result = await window.lablogAPI.openFile(state.lastSavedFilePath);
+      if (!result || !result.success) {
+        window.alert(`Unable to open file: ${result?.error || 'Unknown error'}`);
+      }
+    } catch (err) {
+      window.alert(`Unable to open file: ${err?.message || err}`);
+    }
   });
 
   els.openSettingsButton.addEventListener('click', () => {
